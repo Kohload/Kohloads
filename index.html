@@ -1,0 +1,169 @@
+<!-- File: index.html (below encontrarás también el contenido para styles.css separada) --><!doctype html>
+
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kohloads</title>
+  <!-- Tip: si quieres una tipografía gamer puedes cambiar la familia aquí -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <!-- styles.css -> copia el contenido que está más abajo en el separador "--- styles.css ---" a un archivo llamado styles.css y enlázalo si lo deseas -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <!-- Reemplaza el src por tu raw de GitHub cuando lo tengas -->
+      <img id="logo" src="logo-placeholder.png" alt="Kohloads logo" />
+      <h1>Kohloads</h1>
+    </div>
+    <p class="tagline">Tu hub de descargas - APKs del proyecto</p>
+  </header>  <main class="container">
+    <section class="controls">
+      <div class="hint">Arrastra nuevas entradas o usa el panel para agregar/eliminar apps (listo para JS).</div>
+    </section><section id="apps-grid" class="apps-grid" aria-live="polite">
+  <!-- Las tarjetas de apk se renderizan aquí (por JS). -->
+</section>
+
+  </main>  <footer class="site-footer">
+    <small>© Kohloads — Mantén las APKs actualizadas en tu repositorio GitHub.</small>
+  </footer>  <!-- Template de tarjeta (no visible) -->  <template id="app-card-template">
+    <article class="app-card">
+      <img class="app-image" src="" alt="Imagen de la apk" />
+      <div class="app-info">
+        <h2 class="app-title"></h2>
+        <p class="app-desc"></p>
+        <div class="app-actions">
+          <!-- El botón de descarga es una imagen dentro de un enlace -->
+          <a class="download-link" href="#" download>
+            <img class="download-img" src="" alt="Descargar" />
+          </a>
+          <button class="remove-btn" title="Eliminar">Eliminar</button>
+        </div>
+      </div>
+    </article>
+  </template>  <script>
+    /***** Datos iniciales: reemplaza/actualiza desde tu JSON o directamente desde el array. *****/
+    const apps = [
+      {
+        id: 'app-1',
+        title: 'Demo App 1',
+        image: 'app1-placeholder.png', // cambia por tu raw de GitHub
+        desc: 'Pequeña sinopsis de la APK. Usa ¡texto de alerta! para mensajes rojos.',
+        apk: 'https://example.com/tuapp1.apk',
+        downloadButtonImg: 'download-btn-placeholder.png' // imagen botón raw
+      },
+      {
+        id: 'app-2',
+        title: 'Demo App 2',
+        image: 'app2-placeholder.png',
+        desc: 'Detalles y requisitos. Ejemplo: soporte Android 8.0+.',
+        apk: 'https://example.com/tuapp2.apk',
+        downloadButtonImg: 'download-btn-placeholder.png'
+      }
+    ];
+
+    const grid = document.getElementById('apps-grid');
+    const template = document.getElementById('app-card-template');
+
+    // Convierte texto con delimitadores de alerta ¡ ... ! en span.alert
+    function parseAlerts(text) {
+      return text.replace(/¡(.*?)!/g, function(_, inner){
+        return `<span class="alert">${inner}</span>`;
+      });
+    }
+
+    function render() {
+      grid.innerHTML = '';
+      apps.forEach(app => {
+        const node = template.content.cloneNode(true);
+        node.querySelector('.app-image').src = app.image;
+        node.querySelector('.app-image').alt = app.title + ' imagen';
+        node.querySelector('.app-title').textContent = app.title;
+        node.querySelector('.app-desc').innerHTML = parseAlerts(app.desc);
+        const dl = node.querySelector('.download-link');
+        dl.href = app.apk;
+        // intenta forzar descarga, pero recuerda que GitHub raw o servidores deben permitirlo
+        dl.setAttribute('download', '');
+        node.querySelector('.download-img').src = app.downloadButtonImg;
+        node.querySelector('.download-img').alt = 'Descargar ' + app.title;
+        const removeBtn = node.querySelector('.remove-btn');
+        removeBtn.addEventListener('click', () => {
+          removeApp(app.id);
+        });
+        grid.appendChild(node);
+      });
+    }
+
+    function addApp(entry) {
+      // entry debe tener id,title,image,desc,apk,downloadButtonImg
+      apps.unshift(entry); // agrega al inicio
+      render();
+    }
+
+    function removeApp(id) {
+      const idx = apps.findIndex(a => a.id === id);
+      if (idx > -1) apps.splice(idx, 1);
+      render();
+    }
+
+    // Inicializa render
+    render();
+
+    // Ejemplo para cargar dinámicamente desde un archivo JSON en tu repo (opcional):
+    // fetch('apps.json').then(r => r.json()).then(data => { data.forEach(x => addApp(x)); });
+
+    // Instrucciones rápidas:
+    // - Reemplaza las rutas image/downloadButtonImg/logo por tus raw URLs de GitHub.
+    // - Si subes las APKs al repo, enlaza el raw directo en apk (puede que GitHub sirva con encabezados que no fuerzan descarga).
+    // - Para agregar una app manualmente: addApp({id:'app-3',title:'Mi App',image:'url',desc:'desc',apk:'url.apk',downloadButtonImg:'url'})
+  </script>  <!-- --- styles.css (Copia todo esto a un archivo llamado styles.css si quieres separarlo) --- -->  <style>
+  /* styles.css: tema azul gamer, responsive */
+  :root{
+    --bg-1: #071124;
+    --bg-2: #0b2b4a;
+    --card: #0f2136;
+    --accent: #2ba6ff;
+    --muted: #9fb7d6;
+    --danger-bg: #7b1212;
+    --danger-text: #ffdddd;
+    --glass: rgba(255,255,255,0.03);
+  }
+  *{box-sizing:border-box}
+  body{font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background: linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--muted); min-height:100vh}
+  .site-header{display:flex;flex-direction:column;align-items:center;padding:28px 16px;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{width:64px;height:64px;object-fit:contain;border-radius:12px;box-shadow:0 6px 18px rgba(10,10,10,0.6);background:var(--glass);padding:6px}
+  h1{margin:0;color:var(--accent);letter-spacing:1px;font-weight:900}
+  .tagline{margin:6px 0 0;font-size:14px;color:var(--muted)}
+
+  .container{max-width:1100px;margin:28px auto;padding:0 16px}
+  .controls{margin-bottom:12px}
+  .hint{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;font-size:13px;color:var(--muted)}
+
+  .apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+  .app-card{display:flex;gap:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);align-items:flex-start}
+  .app-image{width:100px;height:100px;object-fit:cover;border-radius:10px;flex-shrink:0}
+  .app-info{flex:1}
+  .app-title{margin:0 0 6px 0;color:#e6f7ff;font-size:18px}
+  .app-desc{margin:0 0 8px 0;font-size:14px;color:var(--muted)}
+  .app-actions{display:flex;gap:10px;align-items:center}
+  .download-link img{height:44px;width:auto;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.6)}
+  .remove-btn{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted);padding:8px 10px;border-radius:8px;cursor:pointer}
+
+  .site-footer{padding:18px;text-align:center;color:var(--muted)}
+
+  /* Alerta roja: uso del prefijo ¡texto! */
+  .alert{display:inline-block;background:var(--danger-bg);color:var(--danger-text);padding:4px 8px;border-radius:6px;font-weight:700}
+
+  /* Botones y contraste extra (contornos más oscuros para destacar iconos) */
+  .app-card, .brand img{box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+
+  /* Responsivo */
+  @media (max-width:520px){
+    .brand img{width:48px;height:48px}
+    .app-image{display:none}
+    .download-link img{height:40px}
+  }
+  </style></body>
+</html>
