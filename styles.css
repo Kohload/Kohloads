@@ -1,0 +1,166 @@
+:root {
+  --bg-1: #071124;
+  --bg-2: #0b2b4a;
+  --card: #0f2136;
+  --accent: #2ba6ff;
+  --muted: #9fb7d6;
+  --danger-bg: #7b1212;
+  --danger-text: #ffdddd;
+}
+
+/* Estilos base */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--muted);
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+
+/* Encabezado */
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px;
+}
+
+h1 {
+  color: var(--accent);
+  margin: 0;
+  font-weight: 900;
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px auto;
+}
+
+#search-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  width: 60%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+#search-btn {
+  background: var(--accent);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Contenedor de las apps */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Tarjeta de cada APK */
+.app-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Imagen del APK (100% más grande = el doble) */
+.app-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Título y descripción */
+.app-title {
+  color: #e6f7ff;
+  font-size: 18px;
+  margin: 0;
+}
+
+.app-desc {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Imagen del botón de descarga (75% más pequeña) */
+.download-link img {
+  width: 70px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Texto de alerta roja (¡texto!) */
+.alert {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* Pie de página */
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+}
+
+/* Responsivo (celulares) */
+@media (max-width: 600px) {
+  .app-image {
+    width: 160px;
+    height: 160px;
+  }
+
+  #search-input {
+    width: 70%;
+  }
+
+  .download-link img {
+    width: 60px;
+  }
+}
